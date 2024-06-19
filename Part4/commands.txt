@@ -1,0 +1,3 @@
+cat urls.txt | sed 's~http[s]*://~~g; s/\.$//' | awk '{print tolower($0)}' | awk -F/ '{print $1}'  | awk -F. '{print $(NF-1)"."$NF}'  | sort | uniq
+awk '{gsub(/http:\/\/|https:\/\/|www\.|\/|[.]*$/,""); print $0}' urls.txt | awk '{print tolower($0)}' | awk -F. '{print $(NF-1)"."$NF}' | sort -u
+

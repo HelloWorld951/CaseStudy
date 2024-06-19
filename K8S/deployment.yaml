@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geturls-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geturls
+  template:
+    metadata:
+      labels:
+        app: geturls
+    spec:
+      containers:
+        - name: geturls
+          image: casestudy/python:latest
+          env:
+            - name: URL1
+              valueFrom:
+                configMapKeyRef:
+                  name: url-config
+                  key: url1
+            - name: URL2
+              valueFrom:
+                configMapKeyRef:
+                  name: url-config
+                  key: url2
+          command: ["/bin/sh"]
+          args:
+            - "-c"
+            - >
+              python geturls.py -o json -u $(URL1) -u $(URL2) && sleep infinity
